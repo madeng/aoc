@@ -40,7 +40,7 @@ def part(file_path: str) -> int:
                 pairs_mapping[o] = t
 
         steps = 40
-        for s in range(1, steps+1):
+        for s in range(steps):
             pair_occur_in_tmpl = step(pairs_mapping, pair_occur_in_tmpl)
 
         char_occurs={}
@@ -54,19 +54,14 @@ def part(file_path: str) -> int:
 
         min = None
         max = None
-        for char, nb_occur in char_occurs.items():
-            if min is None:
-                min = (char, nb_occur)
-                max = (char, nb_occur)
-            if min[1] > nb_occur:
-                min = (char, nb_occur)
-            if max[1] < nb_occur:
-                max = (char, nb_occur)
+        for nb_occur in char_occurs.values():
+            min = nb_occur if min is None or min > nb_occur  else min
+            max = nb_occur if max is None or max < nb_occur else max
         print("most common: ", max)
         print("least common: ", min)
-        print("diff = ", max[1] - min[1])
+        print("diff = ", max - min)
 
-    return max[1] - min[1]
+    return max - min
 
 
 def do_part_test( ) -> bool:
