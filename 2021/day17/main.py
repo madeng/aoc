@@ -27,7 +27,7 @@ def print_trace(trace):
 		print()
 
 def verify_speed(initial_speed:tuple) -> bool:
-	pos = S
+	pos = S_LIST
 	show_trace = False
 	trace={}
 	trace[pos] = "S"
@@ -45,7 +45,7 @@ def verify_speed(initial_speed:tuple) -> bool:
 
 	return False
 
-S=(0,0)
+S_LIST=(0, 0)
 
 for line in open(infile):
 	TX,TY = line.strip().split(':')[1].split(',')

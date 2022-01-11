@@ -163,16 +163,16 @@ for line in open(infile):
 	line = line.strip()
 	print()
 	print(line)
-	S = parse_line(line)[0]
-	print_snail(S)
-	S_LIST.append(S)
+	S_LIST = parse_line(line)[0]
+	print_snail(S_LIST)
+	S_LIST.append(S_LIST)
 
 
 
 print("addition")
 G = S_LIST[0]
-for S in S_LIST[1:]:
-	G = add(G,S)
+for S_LIST in S_LIST[1:]:
+	G = add(G, S_LIST)
 	print_snail(G)
 	
 G = reduce(G)
