@@ -130,7 +130,7 @@ def get_nb_beacons(scanner_list):
     uniq_beacons = sorted(uniq_beacons.values(), key=lambda x: x[0])
     # for beacon in uniq_beacon:
     #     print(beacon)
-    print("nb of beacons = {}".format(len(uniq_beacons)))
+    print("Part1: nb of beacons = {}".format(len(uniq_beacons)))
 
 
 # Known info
@@ -186,4 +186,17 @@ if len(UNKNOWN_S) != 0:
 else:
     get_nb_beacons(S_LIST)
 
-print("found all")
+MAX_DIST = 0
+
+
+def get_distance(pos1, pos2):
+    return np.sum(np.absolute(np.array(pos1) - np.array(pos2)))
+
+
+for i in range(len(S_POS)):
+    for j in range(i+1, len(S_POS)):
+        TMP = get_distance(S_POS[i], S_POS[j])
+        if TMP > MAX_DIST:
+            MAX_DIST = TMP
+
+print("part2: Max_distance = {}".format(MAX_DIST))
