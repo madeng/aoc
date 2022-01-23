@@ -1,8 +1,7 @@
 import copy
 import sys
 
-FILE = sys.argv[1] if len(sys.argv) > 1 else 'day21/tin'
-
+FILE = sys.argv[1] if len(sys.argv) > 1 else 'day21/in'
 
 class Player:
     pos = None

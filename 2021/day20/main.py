@@ -1,7 +1,7 @@
 import copy
 import sys
 
-FILE = sys.argv[1] if len(sys.argv) > 1 else 'tin'
+FILE = sys.argv[1] if len(sys.argv) > 1 else 'day20/in'
 
 def btoi(b: str) ->int:
     nb = 0

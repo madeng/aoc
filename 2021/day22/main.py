@@ -1,4 +1,3 @@
-from __future__ import annotations
 import sys
 
 FILE = sys.argv[1] if len(sys.argv) > 1 else 'day22/in'
@@ -36,7 +35,7 @@ class Cube:
             return False
         return True
 
-    def get_intersection(self, cube:Cube):
+    def get_intersection(self, cube):
         if not self.intersect(cube):
             return None
         return Cube((max(self.rx[0], cube.rx[0]), min(self.rx[1], cube.rx[1])),
@@ -44,14 +43,14 @@ class Cube:
                     (max(self.rz[0], cube.rz[0]), min(self.rz[1], cube.rz[1])))
 
     # Remove a section of the cube if it intersects with another cube.
-    def remove(self, cube: Cube):
+    def remove(self, cube):
         cube_to_remove = self.get_intersection(cube)
         if cube_to_remove is not None:
             Cube.insert(self.removed_cube_list, cube_to_remove)
 
     @staticmethod
     # Insert a cube into a list by making sure it does not intersect with any other cube in that list.
-    def insert(cube_list:list, cube:Cube):
+    def insert(cube_list:list, cube):
         assert cube is not None
         for c in cube_list:
             c.remove(cube)
@@ -78,3 +77,4 @@ print("part1: number lights on= {}".format(NBR_OF_LIGHTS_ON_part1))
 
 NBR_OF_LIGHTS_ON_part2 = sum([C.size() for C in CUBE_LIST])
 print("part2: number lights on= {}".format(NBR_OF_LIGHTS_ON_part2))
+
