@@ -10,7 +10,7 @@ import day21.main
 
 pr.disable()
 s = io.StringIO()
-sortby = SortKey.CUMULATIVE
+sortby = SortKey.TIME
 ps = pstats.Stats(pr, stream=s).sort_stats(sortby).reverse_order()
 ps.print_stats()
 print(s.getvalue())
