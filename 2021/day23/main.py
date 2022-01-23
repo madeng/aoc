@@ -2,14 +2,16 @@ import sys
 import re
 from heapq import *
 
-FILE = sys.argv[1] if len(sys.argv) > 1 else 'day23/tinput'
+DEBUG = False
+
+FILE = sys.argv[1] if len(sys.argv) > 1 else 'day23/input'
 print("Reading from input file: {}".format(FILE))
 
 class Pod:
     cost_per_type = {'A': 1, 'B': 10, 'C': 100, 'D': 1000}
     type_to_room = {'A': 0, 'B': 1, 'C': 2, 'D': 3}
 
-    def __init__(self, t:str):
+    def __init__(self, t: str):
         self.type = t
         self.move_cost = Pod.cost_per_type[t.capitalize()]
         self.assigned_room_id = Pod.type_to_room[t.capitalize()]
@@ -17,13 +19,14 @@ class Pod:
     def __repr__(self):
         return self.type
 
+
 class Room:
     @classmethod
     def get_location(cls, id):
         return id * 2 + 2
 
     @classmethod
-    def get_assigned_room(cls, room_list: list, pod: Pod):# -> (int, Room):
+    def get_assigned_room(cls, room_list: list, pod: Pod):  # -> (int, Room):
         assigned_room = None
         for room in room_list:
             if room.id == pod.assigned_room_id:
@@ -33,7 +36,7 @@ class Room:
         return assigned_room
 
     @classmethod
-    def find_room_by_id(cls, room_list:list, id): #->Room:
+    def find_room_by_id(cls, room_list: list, id):  # ->Room:
         for room in room_list:
             if room.id == id:
                 return room
@@ -92,13 +95,76 @@ class Room:
         self.__init__(self.id, self.size)
         [self.push(pod) for pod in old_pod_list]
 
-class Corridor:
+
+class CorridorString:
+    valid_pos = [0, 1, 3, 5, 7, 9, 10]
+    size = 11
+    empty_space = '.'
+
+    def __init__(self, pod_list=None):
+        if pod_list is None:
+            self.pod_list = CorridorString.empty_space * CorridorString.size
+        else:
+            self.pod_list = pod_list
+
+    def copy(self):
+        return CorridorString(self.pod_list)
+
+    def add(self, pod: Pod, from_pos: int, to_pos: int) -> int:
+        assert self.pod_list[to_pos] == CorridorString.empty_space
+        self.pod_list = self.pod_list[:to_pos] + pod.type + self.pod_list[to_pos + 1:]
+        return abs(from_pos - to_pos)
+
+    def remove(self, pod: Pod) -> int:
+        assert pod in self.pod_list
+        pod_pos = self.pod_list.find(pod.type)
+        self.pod_list = self.pod_list[:pod_pos] + CorridorString.empty_space + self.pod_list[pod_pos + 1:]
+        return abs(Room.get_location(pod.assigned_room_id) - pod_pos)
+
+    def is_passage_free(self, from_pos, to_pos):
+        if from_pos > to_pos:
+            from_pos, to_pos = to_pos, from_pos
+        from_pos += 1
+        string = self.pod_list[from_pos:to_pos]
+        if re.match(r".+", string):
+            return True
+        return False
+
+    def get_free_space_from(self, room: Room):
+        first_pos = room.location
+        possible_space = [(first_pos - 1, lambda x: x - 1), (first_pos + 1, lambda x: x + 1)]
+        free_space = []
+        while len(possible_space) != 0:
+            pos, direction = possible_space.pop()
+            if 0 > pos or pos >= CorridorString.size:
+                continue
+            if pos not in CorridorString.valid_pos:
+                possible_space.append((direction(pos), direction))
+            elif self.pod_list[pos] == CorridorString.empty_space:
+                free_space.append(pos)
+                possible_space.append((direction(pos), direction))
+        return free_space
+
+    def get_pod(self, pos):
+        c = self.pod_list[pos]
+        if c == CorridorString.empty_space:
+            return None
+        return Pod(c)
+
+    def reset_pos(self, pos):
+        self.pod_list = self.pod_list[:pos] + CorridorString.empty_space + self.pod_list[pos + 1:]
+
+    def __str__(self):
+        return self.pod_list
+
+
+class CorridorList:
     valid_pos = [0, 1, 3, 5, 7, 9, 10]
     size = 11
 
     def __init__(self, pod_list=None):
         if pod_list is None:
-            self.pod_list = [None] * Corridor.size
+            self.pod_list = [None] * CorridorList.size
         else:
             self.pod_list = pod_list
 
@@ -112,7 +178,7 @@ class Corridor:
         return tmp
 
     def copy(self):
-        return Corridor(self.pod_list.copy())
+        return CorridorList(self.pod_list.copy())
 
     def add(self, pod: Pod, from_pos: int, to_pos: int) -> int:
         assert self.pod_list[to_pos] is None
@@ -140,9 +206,9 @@ class Corridor:
         free_space = []
         while len(possible_space) != 0:
             pos, direction = possible_space.pop()
-            if 0 > pos or pos >= Corridor.size:
+            if 0 > pos or pos >= CorridorList.size:
                 continue
-            if pos not in Corridor.valid_pos:
+            if pos not in CorridorList.valid_pos:
                 possible_space.append((direction(pos), direction))
             elif self.pod_list[pos] is None:
                 free_space.append(pos)
@@ -155,8 +221,9 @@ class Corridor:
     def reset_pos(self, pos):
         self.pod_list[pos] = None
 
+
 class Config:
-    def __init__(self, is_finished:bool, room_list:list, corridor:Corridor, cost:int):
+    def __init__(self, is_finished: bool, room_list: list, corridor, cost: int):
         self.is_finished = is_finished
         self.cost = cost
         self.room_list = room_list
@@ -177,7 +244,7 @@ def get_unfinished_room(room_list: list):
     return finished, unfinished
 
 
-def get_moves_room_to_corridor(finished_room_list:list, unfinished_room_list, original_corridor) -> list:
+def get_moves_room_to_corridor(finished_room_list: list, unfinished_room_list, original_corridor) -> list:
     move_list = []
     for original_room in unfinished_room_list:
         if original_room.is_ready:
@@ -198,7 +265,7 @@ def get_moves_room_to_corridor(finished_room_list:list, unfinished_room_list, or
     return move_list
 
 
-def get_moves_room_to_room(finished_room_list:list, unfinished_room_list, corridor) -> list:
+def get_moves_room_to_room(finished_room_list: list, unfinished_room_list, corridor) -> list:
     move_list = []
     for i, original_room in enumerate(unfinished_room_list):
         if original_room.is_ready:
@@ -224,7 +291,7 @@ def get_moves_room_to_room(finished_room_list:list, unfinished_room_list, corrid
     return move_list
 
 
-def get_moves_corridor_to_room(finished_room_list:list, unfinished_room_list: list, corridor: Corridor) -> list:
+def get_moves_corridor_to_room(finished_room_list: list, unfinished_room_list: list, corridor) -> list:
     move_list = []
     for pos in range(corridor.size):
         pod = corridor.get_pod(pos)
@@ -251,7 +318,7 @@ def get_moves_corridor_to_room(finished_room_list:list, unfinished_room_list: li
     return move_list
 
 
-def find_moves(room_list: list, corridor: Corridor) -> list:
+def find_moves(room_list: list, corridor) -> list:
     finished_room_list, unfinished_room_list = get_unfinished_room(room_list)
     # Returns the best, unavoidable moves.
     # This avoids branching in many directions when it does not make sense to think about it
@@ -263,7 +330,8 @@ def find_moves(room_list: list, corridor: Corridor) -> list:
         return r2r_moves
     return get_moves_room_to_corridor(finished_room_list, unfinished_room_list, corridor)
 
-def print_config(room_list:list, corridor:Corridor):
+
+def print_config(room_list: list, corridor):
     assert len(room_list) != 0
     room_size = room_list[0].size
     nb_lines = room_size + 3
@@ -289,9 +357,10 @@ def print_config(room_list:list, corridor:Corridor):
                     room_id += 1
                 else:
                     print(" ", end="")
-            print() # new line
+            print()  # new line
 
-def sanity_check(config:Config):
+
+def sanity_check(config: Config):
     # Check the number of pods
     nbr_of_pods = 0
     for pod in config.corridor.pod_list:
@@ -302,27 +371,32 @@ def sanity_check(config:Config):
         nbr_of_pods += len(room.pod_list)
     assert nbr_of_pods == 8
 
+
 # The minimum move cost would be moving a 'A' into the A column when it is in the corridor right out of the room 'A'
 MIN_MOVE_COST = 2
+
+
 def solve(room_list: list) -> int:
     config_heap = []
     heappush(config_heap, Config(False, room_list, Corridor(), 0))
     counter = 0
     min_cost = 1000000000
     while len(config_heap) != 0:
-        # counter += 1
         config = heappop(config_heap)
-        # print("\npopped (count={}, cost={}):".format(counter, config.cost))
-        # print_config(config.room_list, config.corridor)
+        if DEBUG:
+            counter += 1
+            print("\npopped (count={}, cost={}):".format(counter, config.cost))
+            print_config(config.room_list, config.corridor)
         if config.cost >= min_cost - MIN_MOVE_COST:
             # No point in looking into this config. We would have at least the same min_cost if not more.
             continue
         new_config_list = find_moves(config.room_list, config.corridor)
         for new_config in new_config_list:
-            # sanity_check(new_config)
-            # counter += 1
-            # print("\nnew config (count={}, cost={}):".format(counter, config.cost + new_config.cost))
-            # print_config(new_config.room_list, new_config.corridor)
+            if DEBUG:
+                counter += 1
+                print("\nnew config (count={}, cost={}):".format(counter, config.cost + new_config.cost))
+                print_config(new_config.room_list, new_config.corridor)
+                sanity_check(new_config)
             new_config.cost += config.cost
             if new_config.cost >= min_cost:
                 continue
@@ -332,6 +406,9 @@ def solve(room_list: list) -> int:
             heappush(config_heap, new_config)
     return min_cost
 
+############ CLASS CHOICE
+Corridor = CorridorList
+############
 
 ROOM_SIZE_PART1 = 2
 # POD_PER_TYPE = []
@@ -357,11 +434,30 @@ print(str(ROOM_LIST1))
 
 print("part1: x = {}".format(solve(ROOM_LIST1)))
 
-# ROOM_SIZE_PART2 = 4
-# ROOM_LIST2 = [
-#     Room(0, ROOM_SIZE_PART2),
-#     Room(1, ROOM_SIZE_PART2),
-#     Room(2, ROOM_SIZE_PART2),
-#     Room(3, ROOM_SIZE_PART2)
-# ]
-# print("part2: x = {}".format())
+ROOM_SIZE_PART2 = 4
+ROOM_LIST2 = [
+    Room(0, ROOM_SIZE_PART2),
+    Room(1, ROOM_SIZE_PART2),
+    Room(2, ROOM_SIZE_PART2),
+    Room(3, ROOM_SIZE_PART2)
+]
+for room2 in ROOM_LIST2:
+    room1 = Room.find_room_by_id(ROOM_LIST1, room2.id)
+    room2.push(room1.pod_list[0])
+    if room2.id == 0:
+        room2.push(Pod('D'))
+        room2.push(Pod('D'))
+    elif room2.id == 1:
+        room2.push(Pod('B'))
+        room2.push(Pod('C'))
+    elif room2.id == 2:
+        room2.push(Pod('A'))
+        room2.push(Pod('B'))
+    elif room2.id == 3:
+        room2.push(Pod('C'))
+        room2.push(Pod('A'))
+    else:
+        assert False
+    room2.push(room1.pod_list[1])
+
+print("part2: x = {}".format(solve(ROOM_LIST2)))
