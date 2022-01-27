@@ -1,0 +1,244 @@
+inp w   ================================================================================1
+mul x 0     # x=0
+add x z     # .
+mod x 26    # .
+add x 13    # x = 13
+eql x w     # x = 0
+eql x 0     # x = 1
+mul y 0     #           y = 0
+add y 25    #           y = 25
+mul y x     #           y = 25
+add y 1     #           y = 26
+mul z y     #                       z = 0
+mul y 0     #           y = 0
+add y w     #           y = w1
+add y 14    #           y = w1 + 14
+mul y x     #           y = w1 + 14
+add z y     #                       z = w1 + 14 = w1[15,23]
+inp w   ================================================================================2
+mul x 0     # x = 0
+add x z     # x = w1[15,23]
+mod x 26    # .
+add x 12    # x = w1[27,35]
+eql x w     # x = 0
+eql x 0     # x = 1
+mul y 0     #           y = 0
+add y 25    #           y = 25
+mul y x     #           y = 25
+add y 1     #           y = 26
+mul z y     #                       z = 26 * (w1[15,23])
+mul y 0     #           y = 0
+add y w     #           y = w2
+add y 8     #           y = w2[9,18]
+mul y x     # .
+add z y     #                       z = w2[9,18] + 26 * (w1[15,23])
+inp w   ================================================================================3
+mul x 0     # x = 0
+add x z     # x = w2[9,18] + 26 * (w1[15,23])
+mod x 26    # x = (w2[9,18] + 26 * (w1[15,23])) % 26 = w2[9,18] % 26 = w2[9,18]
+add x 11    # x = w2[20,29]
+eql x w     # x = 0
+eql x 0     # x = 1
+mul y 0     #           y = 0
+add y 25    #           y = 25
+mul y x     #           y = 25
+add y 1     #           y = 26
+mul z y     #                       z = 26 * (w2[9,18] + 26 * (w1[15,23]))
+mul y 0     #           y = 0
+add y w     #           y = w3[0,9]
+add y 5     #           y = w3[5,14]
+mul y x     # .
+add z y     #                       z = w3[5] + 26 * (w2[9] + 26 * (w1[15]))
+inp w   ================================================================================4
+mul x 0     # x = 0
+add x z     # x = w3[5] + 26 * (w2[9] + 26 * (w1[15]))
+mod x 26    # x = w3[5] % 26 = w3[5]
+div z 26    #                       z = w2[9] + 26 * (w1[15])
+eql x w     # x = (w3[5,13] == w4[1,9])
+eql x 0     # x = if w3[1-5] and w4[5,9]
+mul y 0     #           y = 0
+add y 25    #           y = 25
+mul y x     #           y = 25 or 0
+add y 1
+mul z y
+mul y 0
+add y w
+add y 4
+mul y x
+add z y
+inp w   ================================================================================5
+mul x 0
+add x z
+mod x 26
+add x 15
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 10
+mul y x
+add z y
+inp w   ================================================================================6
+mul x 0
+add x z
+mod x 26
+div z 26
+add x -13
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 13
+mul y x
+add z y
+inp w   ================================================================================7
+mul x 0
+add x z
+mod x 26
+add x 10
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 16
+mul y x
+add z y
+inp w   ================================================================================8
+mul x 0
+add x z
+mod x 26
+div z 26
+add x -9
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 5
+mul y x
+add z y
+inp w   ================================================================================9
+mul x 0
+add x z
+mod x 26
+add x 11
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 6
+mul y x
+add z y
+inp w   ================================================================================10
+mul x 0
+add x z
+mod x 26
+add x 13
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 13
+mul y x
+add z y
+inp w   ================================================================================11
+mul x 0
+add x z
+mod x 26
+div z 26
+add x -14
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 6
+mul y x
+add z y
+inp w   ================================================================================12
+mul x 0
+add x z
+mod x 26
+div z 26
+add x -3
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 7
+mul y x
+add z y
+inp w   ================================================================================13
+mul x 0
+add x z
+mod x 26
+div z 26
+add x -2
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 13
+mul y x
+add z y
+inp w   ================================================================================14
+mul x 0
+add x z
+mod x 26
+div z 26
+add x -14
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 3
+mul y x
+add z y
