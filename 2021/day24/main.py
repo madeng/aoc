@@ -244,8 +244,7 @@ for LINE_NO,LINE in enumerate(open(FILE)):
     assert OP_STR in OP.keys()
     PARAMS = COORD.split(" ")
     OP[OP_STR](*PARAMS)
-    # print(LINE_NO + 1, FORK_LIST, LINE, VAR)
 
 if VAR['z'] == 0:
-    print(COND_LIST)
+    print("condition list=",COND_LIST)
 # print("part1: x = {}".format(VAR))

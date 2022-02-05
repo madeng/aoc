@@ -21,7 +21,8 @@ else:
 VAR = INIT_VAR
 
 INPUT_NBR = 0
-INPUT = "0"*14 # Enter a number to verify
+#INPUT = "0"*14 # Enter a number to verify
+INPUT = "93499629698999"
 def read_input(a, b=0):
     global INPUT_NBR
     assert INPUT_NBR < len(INPUT)
