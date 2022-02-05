@@ -82,9 +82,9 @@ MAP_DICE_RESULT_2_POSSIBILITIES = {
 def move(p: tuple, val: int):
     # p[0]: position, p[1]: points
     pos = (val + p[0]) % 10
-    return pos, p[1] + pos
+    return pos, p[1] + pos + 1
 
-WINNING_POINTS = 15
+WINNING_POINTS = 21
 def play(p1:tuple, p2:tuple, is_p1_turn=True, nb_universe=1):
     if p1[1] >= WINNING_POINTS:
         return nb_universe, 0
@@ -112,6 +112,6 @@ def play(p1:tuple, p2:tuple, is_p1_turn=True, nb_universe=1):
 
     return w1, w2
 
-
-SUM_WINNING_P1, SUM_WINNING_P2 = play((0,0), (0,0))
-print("part2: p1: {}, p2: {}".format(SUM_WINNING_P1, SUM_WINNING_P2))
+print(f"starting pos: {ORIG_P1}, {ORIG_P2}")
+SUM_WINNING_P1, SUM_WINNING_P2 = play((ORIG_P1,0), (ORIG_P2,0))
+print("part2: p1: {} p2: {}".format(SUM_WINNING_P1, SUM_WINNING_P2))
