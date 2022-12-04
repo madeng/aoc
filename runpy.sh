@@ -56,7 +56,7 @@ shift
 cd $script_folder
 
 input_file_list="$(echo testinput* tin*)"
-[ $test_only = true ] || input_file_list="$input_file_list input in"
+[ $test_only = true ] || input_file_list="input in $input_file_list"
 
 stop_it=false
 for script_file in $script_file_list; do
