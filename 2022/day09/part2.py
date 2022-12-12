@@ -21,16 +21,14 @@ def movetail(i=1):
 
 	xdist=distx(h,t)
 	ydist=disty(h,t)
-	if abs(xdist) > 1:
-		if xdist < 0:
-			K[i]=(t[0]-1,h[1])
-		else:
-			K[i]=(t[0]+1,h[1])
-	else:
-		if ydist < 0:
-			K[i]=(h[0],t[1]-1)
-		else:
-			K[i]=(h[0],t[1]+1)
+	dx=0
+	dy=0
+	if abs(xdist) > 1 or abs(ydist) > 1:
+		if xdist != 0:
+			dx = 1 if xdist > 0 else -1
+		if ydist != 0:
+			dy = 1 if ydist > 0 else -1
+	K[i]=(t[0]+dx,t[1]+dy)
 	movetail(i+1)
 
 def reg(t):
@@ -62,4 +60,5 @@ for L in LINES:
 
 ANS = len(V.keys())
 # 2525 too low
+# 2562
 print("ANSWER ==>  {}\n".format(ANS))
