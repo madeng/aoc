@@ -16,18 +16,18 @@ for L in LINES:
 		C += 1
 		if (C + 20) % 40 == 0:
 			ANS += REG * C
-			print('prev-adding {} to ans (reg={}, ans = {}, C={})'.format(REG*C, REG, ANS, C))
+#			print('prev-adding {} to ans (reg={}, ans = {}, C={})'.format(REG*C, REG, ANS, C))
 		C += 1
 		REG += VAL
 
-		print ('addx by {}'.format(VAL))
+#		print ('addx by {}'.format(VAL))
 	else:
 		print('unknown op')
 		break
 	if (C + 20) % 40 == 0:
 		ANS += REG * C
-		print('adding {} to ans (reg={}, ans={}, C={})'.format(REG*(C), REG, ANS,C))
+	#	print('adding {} to ans (reg={}, ans={}, C={})'.format(REG*(C), REG, ANS,C))
 
 
-# to be tried: 15140
+# 15140
 print("ANSWER ==>  {}\n".format(ANS))
