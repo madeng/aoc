@@ -23,7 +23,7 @@ class Monkey:
 			self.items[index] += val
 		elif op == '*':
 			self.items[index] *= val
-		self.items[index] = int(self.items[index] / 3)
+		self.items[index] = int(self.items[index])
 		self.items[index] %= BIG_MOD
 		self.inspected += 1
 		return self.items[index]
@@ -74,7 +74,7 @@ def solve():
 			m.items.pop(0)
 
 
-for _ in range(20):
+for _ in range(10000):
 	solve()
 
 
