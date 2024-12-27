@@ -1,0 +1,157 @@
+DD -> BB -> JJ -> HH -> EE -> CC -> 	
+
+
+
+
+Guess, too high
+2019: ['OA', 'VP', 'VM', 'TR', 'DO', 'KI', 'HN', 'SH']
+1950, too high
+1912, wrong answer
+
+
+
+1
+Moving to VP (dist=1)
+pts = 
+rate=0
+
+2
+opening VP
+pts = 0
+rate = 0
+
+3
+Moving to OA
+valve VP is open
+pts = 21
+rate = 21
+
+4
+Moving to VM
+valve VP is open
+pts = 42
+rate = 21
+
+5
+Opening VM
+valve VP is open
+pts = 63
+rate = 21
+
+6
+Moving to LY
+valve VP and VM are open
+rate = 40
+pts = 103
+
+7
+Moving to JR
+valve VP and VM are open
+rate = 40
+pts = 143
+
+8
+Moving to TR
+Valve VP and VM are open
+rate = 40
+pts = 183
+
+9
+opening TR
+valve vp and VM are open
+rate = 40
+pts = 223
+
+10
+moving to JR
+valve VP, VM and TR are open
+rate = 63
+pts = 286
+
+11
+moving to LY
+rate = 63
+pts = 349
+
+12
+moving to VM
+rate = 63
+pts = 412
+
+13
+moving to OY
+pts = 475
+
+14
+moving to TE
+pts = 538
+
+15
+moving to DO
+pts = 601
+
+16
+Opening DO
+pts = 664
+
+17
+moving to XU
+valve VP, VM, TR, DO are open
+rate = 76
+pts = 740
+
+18
+moving to KI
+pts = 816
+
+19
+opening KI
+pts = 892
+
+20
+moving to MT
+valve VP, VM, TR, DO and KI are open
+rate = 91
+pts = 983
+
+21
+moving to BO
+pts = 1074
+
+22
+moving to HN
+pts = 1165
+
+23
+opening HN
+pts = 1256
+
+24
+moving to BO
+valves VP, VM, TR, DO, KI and HN are open
+rate = 107
+points = 1347
+
+25
+moving to MT
+pts = 1454
+
+26
+moving to KI
+pts = 1561
+
+27
+moving to XU
+pts = 1668
+
+28
+moving to DO
+pts = 1775
+
+29
+moving to GO
+pts = 1882
+
+30
+moving to HO
+pts = 1989

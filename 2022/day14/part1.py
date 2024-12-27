@@ -33,7 +33,6 @@ def drop_sand(x,y):
 			break
 	return True
 
-
 ALL_COORDS = []
 leftmost = 100000
 rightmost = 0
@@ -63,9 +62,10 @@ for coords in ALL_COORDS:
 				GRID[x][y] = 1
 
 count = 0
+valeur_de_retour = drop_sand(SX,SY)
 while drop_sand(SX,SY):
 	count += 1
-present(GRID)
+#present(GRID)
 
 ANS=count
 if ANS != 0:
